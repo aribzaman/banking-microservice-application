@@ -1,0 +1,11 @@
+
+|
+java:S1488!"_Immediately return this expression instead of assigning it to the temporary variable "account".(Ëšâ¹8ûšÖ1
+m
+java:S3655!"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(Ëšâ¹8£ûšÖ1
+T
+java:S1135""2Complete the task associated to this TODO comment.(Õïìşÿÿÿÿ8ñÑ™Ö1
+H
+java:S1452*"&Remove usage of generic wildcard type.(œæø³üÿÿÿÿ8—ãÖ1
+H
+java:S14521"&Remove usage of generic wildcard type.(Çºîµıÿÿÿÿ8™ãÖ1

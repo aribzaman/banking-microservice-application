@@ -1,0 +1,14 @@
+
+R
+java:S1128"0Remove this unused import 'jakarta.persistence'.(Î«Ô§úÿÿÿÿ8“îÜŒÖ1
+]
+java:S1128";Remove this unused import 'jakarta.validation.constraints'.(”ìÉşÿÿÿÿ8Ü‘ÜŒÖ1
+j
+java:S1128"HRemove this unused import 'org.hibernate.annotations.CreationTimestamp'.(¡œøÀúÿÿÿÿ8‰¦ÜŒÖ1
+f
+java:S1128	"DRemove this unused import 'org.hibernate.annotations.DynamicUpdate'.(Û­‰Òøÿÿÿÿ8¥µÛŒÖ1
+h
+java:S1128
+"FRemove this unused import 'org.hibernate.annotations.UpdateTimestamp'.(Ñµ¬Ûúÿÿÿÿ8„¼ÜŒÖ1
+M
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8”îÜŒÖ1

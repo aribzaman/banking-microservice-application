@@ -1,5 +1,6 @@
 package com.nagarro.customerservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomerEntity {
 
     @Id
@@ -49,7 +51,7 @@ public class CustomerEntity {
     private LocalDateTime modifiedat;
 
     @Transient
-    private List<AccountEntity> accounts = new ArrayList<>();
+    private List<AccountEntity> accounts;
 
     public CustomerEntity(String name, String email, String address) {
         this.name = name;

@@ -1,21 +1,7 @@
 
-n
-java:S2293*"YReplace the type specification in this constructor call with the diamond operator ("<>").(ı¼‡^
-o
-java:S22938"YReplace the type specification in this constructor call with the diamond operator ("<>").(ºßÔÍ
-t
-java:S2293H"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ç«»Õøÿÿÿÿ
-t
-java:S2293R"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ç«»Õøÿÿÿÿ
-t
-java:S2293c"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ç«»Õøÿÿÿÿ
-t
-java:S2293k"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ç«»Õøÿÿÿÿ
-t
-java:S2293s"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ç«»Õøÿÿÿÿ
-t
-java:S2293|"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ç«»Õøÿÿÿÿ
-p
-java:S2293Š"YReplace the type specification in this constructor call with the diamond operator ("<>").(«Ø×Î
-h	java:S100."NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ñ­¹»øÿÿÿÿ
-h	java:S100y"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‚Ä„¨ùÿÿÿÿ
+o	java:S1009"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(íÜëşÿÿÿÿ8¤£×1
+T
+java:S11357"2Complete the task associated to this TODO comment.(Â“˜„úÿÿÿÿ8¥£×1
+j	java:S100G"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Éà­°8§£×1
+i	java:S100S"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆ ÇV8¨÷«£×1
+k	java:S100˜"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ñìÈÑ8®÷«£×1

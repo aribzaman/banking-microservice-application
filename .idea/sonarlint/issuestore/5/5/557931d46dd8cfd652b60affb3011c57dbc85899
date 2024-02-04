@@ -1,0 +1,9 @@
+
+C
+java:S1452*"&Remove usage of generic wildcard type.(³Á°‰8¤ŸèŸ×1
+p
+java:S1128"NRemove this unused import 'com.nagarro.customerservice.entity.CustomerEntity'.(šÅ»»şÿÿÿÿ8¥ŸèŸ×1
+~
+java:S1128"\Remove this unused import 'com.nagarro.customerservice.exception.ResourceNotFoundException'.(ÔƒÅËÿÿÿÿÿ8Íğ´¤×1
+m
+java:S1128"PRemove this unused import 'com.nagarro.customerservice.service.CustomerService'.(ııÂß8¥ŸèŸ×1

@@ -18,9 +18,7 @@ public class CustomerController {
 
     CustomerService customerService;
 
-    //[TODO] Return CustomerDtos
-
-    @GetMapping({""})
+    @GetMapping
     public List<CustomerEntity> getAllCustomer(){
         return customerService.getAllCustomer();
     }
@@ -30,7 +28,6 @@ public class CustomerController {
         return customerService.getCustomerById(id);
     }
 
-    //[TODO] use Customer instead of CustomerDto in parameter
     @PostMapping
     public CustomerEntity createCustomer(@RequestBody CustomerDto customerDto){
         return customerService.createCustomer(customerDto);

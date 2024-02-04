@@ -8,6 +8,8 @@ import lombok.Data;
 public class AccountEntity {
 
     private Long id;
+    private Long accountNumber;
+    private Long ifscCode;
     private Long customerId;
     private double balance;
 

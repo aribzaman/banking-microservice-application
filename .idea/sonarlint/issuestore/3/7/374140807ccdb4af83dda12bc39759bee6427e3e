@@ -1,0 +1,13 @@
+
+‰
+java:S1488"gImmediately return this expression instead of assigning it to the temporary variable "customerDtoList".(Ù‘Ùøÿÿÿÿ8…Ï°œ×1
+…
+java:S1488$"cImmediately return this expression instead of assigning it to the temporary variable "customerDto".(­½—ıÿÿÿÿ8†Ï°œ×1
+r
+java:S3655/"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(Ã«Ï»ûÿÿÿÿ8Ï°œ×1
+m
+java:S3655#"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(»µê8Ï°œ×1
+O
+java:S11727"2Remove this unused method parameter "phoneNumber".(Ì‘²8”Ï°œ×1
+H
+java:S1452<"&Remove usage of generic wildcard type.(ºøŠ€úÿÿÿÿ8”Ï°œ×1

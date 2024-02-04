@@ -14,6 +14,6 @@ public class CustomerMapper implements Function<CustomerDto, CustomerEntity> {
     }
 
     public CustomerDto reverse(CustomerEntity customerEntity) {
-        return new CustomerDto(customerEntity.getName(), customerEntity.getEmail(), customerEntity.getAddress());
+        return new CustomerDto(customerEntity.getId(), customerEntity.getName(), customerEntity.getEmail(), customerEntity.getAddress());
     }
 }

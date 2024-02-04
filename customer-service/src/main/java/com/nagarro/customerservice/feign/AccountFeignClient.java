@@ -12,13 +12,15 @@ import java.util.List;
 @FeignClient("ACCOUNT-SERVICE")
 public interface AccountFeignClient {
 
+    @DeleteMapping("/account/user/{customerId}")
+    ResponseEntity<?> deleteAllAccountsByUserId(@PathVariable Long customerId);
+
+    //----------------------------------------------------------------
+
     @GetMapping("/account")
-    public List<AccountEntity> getAllAccounts();
+    List<AccountEntity> getAllAccounts();
 
     @GetMapping("/account/user/{userId}")
-    public List<AccountEntity> getAllAccountsByUserId(@PathVariable Long userId);
-
-    @DeleteMapping("/account/user/{userId}")
-    public ResponseEntity<?> deleteAllAccountsByUserId(@PathVariable Long userId);
+    List<AccountEntity> getAllAccountsByUserId(@PathVariable Long userId);
 
 }

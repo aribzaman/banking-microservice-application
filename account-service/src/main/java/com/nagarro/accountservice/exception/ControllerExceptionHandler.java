@@ -52,14 +52,16 @@ public class ControllerExceptionHandler {
 		return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
 	}
 
-	//[TODO] Many types of Integrity Constraints, others like : Column 'account_number' cannot be null
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<ResponseMessage> DataIntegrityViolationException(DataIntegrityViolationException ex,
 																		   HttpServletRequest request) {
 		String response = ex.getClass().getSimpleName();
 		if (ex.getMostSpecificCause() instanceof java.sql.SQLIntegrityConstraintViolationException cause){
 			log.error(cause.getClass().getSimpleName() + " :: "+ cause.getMessage());
-			response= "Duplicate entry for the given item";
+			response= ex.getMessage();
+		}
+		else {
+			log.error(ex.getClass().getSimpleName() + " :: "+ ex.getMessage());
 		}
 		ResponseMessage message = new ResponseMessage(HttpStatus.CONFLICT, HttpStatus.CONFLICT.value(), LocalDateTime.now(),
 				response, request.getRequestURI());

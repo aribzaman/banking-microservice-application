@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("CUSTOMER-SERVICE")
 public interface CustomerFeignClient {
 
-    @GetMapping("api/v2/customer/{id}")
+    @GetMapping("api/v1/customer/{id}")
     public CustomerDto getCustomerById(@PathVariable Long id);
 
-    @GetMapping("api/v2/customer/verify/{customerId}")
+    @GetMapping("api/v1/customer/verify/{customerId}")
     public boolean verifyCustomer(@PathVariable Long customerId, @RequestParam String name, @RequestParam Long phoneNumber);
 
 }

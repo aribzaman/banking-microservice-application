@@ -1,6 +1,5 @@
 package com.nagarro.accountservice.controller;
 
-import com.nagarro.accountservice.dto.AccountDto;
 import com.nagarro.accountservice.entity.AccountEntity;
 import com.nagarro.accountservice.service.AccountServiceV2;
 import lombok.AllArgsConstructor;
@@ -16,28 +15,23 @@ public class AccountControllerV2 {
 
     AccountServiceV2 accountServiceV2;
 
-    @GetMapping("/{id}")
-    public AccountDto getAccountById(@PathVariable Long id){
-        return accountServiceV2.getAccountById(id);
-    }
-
     @GetMapping
-    public List<AccountDto> getAllAccounts(){
+    public List<AccountEntity> getAllAccounts(){
         return accountServiceV2.getAllAccounts();
     }
 
-    @GetMapping("/customer/{customerId}")
-    public AccountDto getAccountByCustomerId(@PathVariable Long customerId){
-        return accountServiceV2.getAccountByCustomerId(customerId);
+    @GetMapping("/{id}")
+    public AccountEntity getAccountById(@PathVariable Long id){
+        return accountServiceV2.getAccountById(id);
     }
 
-    @GetMapping("/user/{userId}")
-    public List<AccountEntity> getAllAccountsByUserId(@PathVariable Long userId){
-        return accountServiceV2.getAllAccountsByUserId(userId);
+    @GetMapping("/customer/{customerId}")
+    public List<AccountEntity> getAllAccountsByCustomerId(@PathVariable Long customerId){
+        return accountServiceV2.getAllAccountsByCustomerId(customerId);
     }
 
     @PostMapping
-    public AccountDto createCustomer(@RequestBody AccountEntity accountEntity){
+    public AccountEntity createCustomer(@RequestBody AccountEntity accountEntity){
         return accountServiceV2.createAccount(accountEntity);
     }
 

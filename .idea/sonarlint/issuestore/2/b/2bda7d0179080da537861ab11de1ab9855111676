@@ -1,7 +1,5 @@
 
-o	java:S1009"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(νάλώÿÿÿÿ8¤£Χ1
-T
-java:S11357"2Complete the task associated to this TODO comment.(Β“„ϊÿÿÿÿ8¥£Χ1
-j	java:S100G"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ιΰ­°8§£Χ1
-i	java:S100S"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.( ΗV8¨χ«£Χ1
-k	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ρμΘΡ8®χ«£Χ1
+o	java:S1008"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(νάλώÿÿÿÿ8κ °Χ1
+j	java:S100I"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ιΰ­°8μ °Χ1
+i	java:S100U"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.( ΗV8π °Χ1
+k	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ρμΘΡ8ω °Χ1

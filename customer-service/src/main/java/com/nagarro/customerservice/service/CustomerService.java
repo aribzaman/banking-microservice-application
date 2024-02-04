@@ -3,11 +3,9 @@ package com.nagarro.customerservice.service;
 import com.nagarro.customerservice.dao.CustomerRepository;
 import com.nagarro.customerservice.dto.CustomerDto;
 import com.nagarro.customerservice.dto.CustomerMapper;
-import com.nagarro.customerservice.entity.AccountEntity;
 import com.nagarro.customerservice.entity.CustomerEntity;
 import com.nagarro.customerservice.exception.ResourceNotFoundException;
 import com.nagarro.customerservice.feign.AccountFeignClient;
-import com.nagarro.customerservice.utility.Utility;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -26,40 +24,44 @@ public class CustomerService {
     CustomerMapper customerMapper;
     AccountFeignClient accountFeignClient;
 
-    public List<CustomerEntity> getAllCustomer() {
+    public List<CustomerDto> getAllCustomer() {
         List<CustomerEntity> allCustomers = customerRepository.findAll();
-        List<AccountEntity> allAccounts = accountFeignClient.getAllAccounts();
-        Utility.populateCustomerAccounts(allCustomers, allAccounts);
-
-        return allCustomers;
+        List<CustomerDto> customerDtoList = allCustomers.stream().map(customerMapper::reverse).toList();
+        return customerDtoList;
     }
 
-    public CustomerEntity getCustomerById(Long id) {
+    public CustomerDto getCustomerById(Long id) {
         doesCustomerExists(id);
         CustomerEntity customer = customerRepository.findById(id).get();
-        List<AccountEntity> accounts = accountFeignClient.getAllAccountsByUserId(id);
-        customer.setAccounts(accounts);
-        return customer;
+        CustomerDto customerDto = customerMapper.reverse(customer);
+        return customerDto;
     }
 
-    public CustomerEntity createCustomer(CustomerDto customerDto) {
+    public CustomerDto createCustomer(CustomerDto customerDto) {
         CustomerEntity customerEntity = customerMapper.apply(customerDto);
-        return customerRepository.save(customerEntity);
+        //[FEATURE] can incorporate request to create account with details: (branch, city, ifsc, amount)
+        //accountFeignClient.createCustomer(AccountEntity accountEntity);
+        return customerMapper.reverse(customerRepository.save(customerEntity));
     }
 
-    public CustomerEntity updateCustomer(Long id, CustomerDto customerDto) {
+    public CustomerDto updateCustomer(Long id, CustomerDto customerDto) {
+        doesCustomerExists(id);
+        CustomerEntity existingCustomerToBeUpdated = customerRepository.findById(id).get();
+        CustomerEntity updatedValues = customerMapper.apply(customerDto);
 
-        CustomerEntity existingCustomer = getCustomerById(id);
-        CustomerEntity updatedCustomer = customerMapper.apply(customerDto);
+        BeanUtils.copyProperties(updatedValues, existingCustomerToBeUpdated, getNullPropertyNames(updatedValues));
 
-        BeanUtils.copyProperties(updatedCustomer, existingCustomer, getNullPropertyNames(updatedCustomer));
+        return customerMapper.reverse(customerRepository.save(existingCustomerToBeUpdated));
+    }
 
-        return customerRepository.save(existingCustomer);
+    public boolean verifyCustomer(Long customerId, String name, Long phoneNumber) {
+        doesCustomerExists(customerId);
+        return customerRepository.existsByIdAndName(customerId, name);
     }
 
     public ResponseEntity<?> deleteCustomer(Long id) {
         doesCustomerExists(id);
-        accountFeignClient.deleteAllAccountsByUserId(id);
+        accountFeignClient.deleteAllAccountsByCustomerId(id);
         customerRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -69,4 +71,5 @@ public class CustomerService {
             throw new ResourceNotFoundException("Customer Not Found");
         }
     }
+
 }

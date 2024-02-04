@@ -2,11 +2,10 @@ package com.nagarro.customerservice.controller;
 
 import com.nagarro.customerservice.dto.CustomerDto;
 import com.nagarro.customerservice.entity.CustomerEntity;
-import com.nagarro.customerservice.exception.ResourceNotFoundException;
-import com.nagarro.customerservice.service.CustomerService;
 import com.nagarro.customerservice.service.CustomerServiceV2;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,38 +13,33 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v2/customer")
 @AllArgsConstructor
+@Validated
 public class CustomerControllerV2 {
 
-    CustomerServiceV2 customerService;
+    CustomerServiceV2 customerServiceV2;
 
     @GetMapping
-    public List<CustomerDto> getAllCustomer(){
-        return customerService.getAllCustomer();
+    public List<CustomerEntity> getAllCustomer(){
+        return customerServiceV2.getAllCustomer();
     }
 
-    @GetMapping("/{id}")
-    public CustomerDto getCustomerById(@PathVariable Long id){
-        return customerService.getCustomerById(id);
+    @GetMapping("/{customerId}")
+    public CustomerEntity getCustomerById(@PathVariable Long customerId){
+        return customerServiceV2.getCustomerById(customerId);
     }
 
     @PostMapping
-    public CustomerDto createCustomer(@RequestBody CustomerDto customerDto){
-        return customerService.createCustomer(customerDto);
+    public CustomerEntity createCustomer(@RequestBody CustomerDto customerDto){
+        return customerServiceV2.createCustomer(customerDto);
     }
 
     @PutMapping("/{id}")
-    public CustomerDto updateCustomer(@PathVariable Long id, @RequestBody CustomerDto customerDto){
-        return customerService.updateCustomer(id, customerDto);
+    public CustomerEntity updateCustomer(@PathVariable Long id, @RequestBody CustomerDto customerDto){
+        return customerServiceV2.updateCustomer(id, customerDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable Long id){
-        return customerService.deleteCustomer(id);
+        return customerServiceV2.deleteCustomer(id);
     }
-
-    @GetMapping("/verify/{customerId}")
-    public boolean verifyCustomer(@PathVariable Long customerId, @RequestParam String name, @RequestParam Long phoneNumber){
-        return customerService.verifyCustomer(customerId, name, phoneNumber);
-    }
-
 }

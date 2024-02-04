@@ -1,13 +1,19 @@
 package com.nagarro.customerservice.exception;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
@@ -24,6 +30,7 @@ import java.util.Map;
 
 //ResourceNotFoundException.class :: (throw Manually Not found in db )
 //DataIntegrityViolationException.class -> SQLIntegrityConstraintViolationException :: Repeated Value posted in db
+//FeignException.class ::exceptions pertaining to feign
 //ConstraintViolationException.class :: For Validators in entity/records
 //MethodArgumentTypeMismatchException.class :: type conversion failure in the path variable of endpoint= 8080/customer/as OR giving null to int in queryParameter
 //HttpMessageNotReadableException.class :: Redirection of wrong JSON form format to below functions
@@ -50,12 +57,27 @@ public class ControllerExceptionHandler {
 		String response = ex.getClass().getSimpleName();
 		if (ex.getMostSpecificCause() instanceof java.sql.SQLIntegrityConstraintViolationException cause){
 			log.error(cause.getClass().getSimpleName() + " :: "+ cause.getMessage());
-			response= "Duplicate entry for the given email address";
+			response= ex.getMessage();
+		}
+		else {
+			log.error(ex.getClass().getSimpleName() + " :: "+ ex.getMessage());
 		}
 		ResponseMessage message = new ResponseMessage(HttpStatus.CONFLICT, HttpStatus.CONFLICT.value(), LocalDateTime.now(),
 				response, request.getRequestURI());
 
 		return new ResponseEntity<ResponseMessage>(message, HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(FeignException.class)
+	public ResponseEntity<ResponseMessage> FeignException(FeignException ex, HttpServletRequest request) throws JsonProcessingException {
+		ObjectMapper mapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
+		if(ex.status() >= 500 && ex.status() <= 599){
+			ResponseMessage errorResponse = new ResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), LocalDateTime.now(),
+					"Server Unavailable at moment: " + ex.contentUTF8(), request.getRequestURI());
+			return new ResponseEntity<>(errorResponse, HttpStatusCode.valueOf(ex.status()));
+		}
+		ResponseMessage errorResponse = mapper.readValue(ex.contentUTF8(), ResponseMessage.class);
+		return new ResponseEntity<>(errorResponse, HttpStatusCode.valueOf(ex.status()));
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)

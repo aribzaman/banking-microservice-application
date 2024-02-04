@@ -9,7 +9,7 @@ public class AccountEntity {
 
     private Long id;
     private Long accountNumber;
-    private Long ifscCode;
+    private String ifscCode;
     private Long customerId;
     private double balance;
 

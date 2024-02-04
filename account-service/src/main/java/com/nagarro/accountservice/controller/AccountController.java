@@ -4,20 +4,19 @@ import com.nagarro.accountservice.dto.AccountDto;
 import com.nagarro.accountservice.dto.ResponseMessage;
 import com.nagarro.accountservice.dto.TransactionDto;
 import com.nagarro.accountservice.entity.AccountEntity;
-import com.nagarro.accountservice.feign.CustomerFeignClient;
 import com.nagarro.accountservice.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/api/v1/account")
 @AllArgsConstructor
 public class AccountController {
 
     AccountService accountService;
 
-    @GetMapping("/number/{accountNumber}")
+    @GetMapping("/{accountNumber}")
     public AccountDto getAccountByAccountNumber(@PathVariable Long accountNumber){
         return accountService.getAccountByAccountNumber(accountNumber);
     }
@@ -27,7 +26,12 @@ public class AccountController {
         return accountService.transaction(transactionDto);
     }
 
-    @DeleteMapping("/user/{customerId}")
+    @DeleteMapping("/{accountNumber}")
+    public ResponseEntity<?> deleteAccountsByAccountNumber(@PathVariable Long accountNumber){
+        return accountService.deleteAccountByAccountNumber(accountNumber);
+    }
+
+    @DeleteMapping("/customer/{customerId}")
     public ResponseEntity<?> deleteAllAccountsByCustomerId(@PathVariable Long customerId){
         return accountService.deleteAllAccountsByCustomerId(customerId);
     }

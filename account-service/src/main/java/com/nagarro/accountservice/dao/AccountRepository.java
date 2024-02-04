@@ -10,19 +10,20 @@ import java.util.Optional;
 @Repository
 public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
-    Optional<AccountEntity> findByCustomerId(Long customerId);
-
     Optional<AccountEntity> findByAccountNumber(Long accountNumber);
+
+    void deleteByAccountNumber(Long accountNumber);
 
     void deleteAllByCustomerId(Long customerId);
 
-    boolean existsByCustomerId(Long customerId);
-
     boolean existsByAccountNumber(Long accountNumber);
+
+    //----------------------------------------------------------------
+
+    boolean existsByCustomerId(Long customerId);
 
     List<AccountEntity> findAllByCustomerId(Long customerId);
 
     void deleteByCustomerId(Long customerId);
-
 
 }

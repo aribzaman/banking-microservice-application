@@ -7,7 +7,6 @@ import com.nagarro.accountservice.exception.ResourceNotFoundException;
 import com.nagarro.accountservice.exception.ValidationFailedException;
 import com.nagarro.accountservice.feign.CustomerFeignClient;
 import com.nagarro.accountservice.utility.Utility;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -80,8 +79,17 @@ public class AccountService {
     }
 
     @Transactional
-    public ResponseEntity<?> deleteAllAccountsByCustomerId(Long userId) {
-        accountRepository.deleteAllByCustomerId(userId);
+    public ResponseEntity<?> deleteAccountByAccountNumber(Long accountNumber) {
+        doesAccountNumberExists(accountNumber);
+        accountRepository.deleteByAccountNumber(accountNumber);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<?> deleteAllAccountsByCustomerId(Long customerId) {
+        //[FEATURE] check if any account exists by this customer id (Mandatory: add account when adding customer)
+        //accountServiceV2.doesCustomerExists(customerId);
+        accountRepository.deleteAllByCustomerId(customerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -95,8 +103,6 @@ public class AccountService {
 
     public AccountDto createAccount(AccountEntity accountEntity) {
         accountEntity.setAccountNumber(Utility.generateAccountNumber());
-        //[TODO] verify id
-        //[TODO] throw and catch exceptiom, also try in transaction [java techi example]
         customerFeignClient.verifyCustomer(accountEntity.getCustomerId(), "",1L);
         AccountEntity savedAccount = accountRepository.save(accountEntity);
         return accountMapper.apply(savedAccount);

@@ -1,7 +1,6 @@
 package com.nagarro.accountservice.service;
 
 import com.nagarro.accountservice.dao.AccountRepository;
-import com.nagarro.accountservice.dto.AccountDto;
 import com.nagarro.accountservice.dto.AccountMapper;
 import com.nagarro.accountservice.dto.CustomerDto;
 import com.nagarro.accountservice.entity.AccountEntity;
@@ -24,33 +23,33 @@ public class AccountServiceV2 {
     CustomerFeignClient customerFeignClient;
     AccountMapper accountMapper;
 
-    public List<AccountDto> getAllAccounts() {
-        List<AccountEntity> allAccounts = accountRepository.findAll();
-        return allAccounts.stream().map(accountMapper).toList();
+    public List<AccountEntity> getAllAccounts() {
+//        List<AccountEntity> allAccounts = accountRepository.findAll();
+//        return allAccounts.stream().map(accountMapper).toList();
+        return accountRepository.findAll();
     }
 
-    public List<AccountEntity> getAllAccountsByUserId(Long userId) {
-        return accountRepository.findAllByCustomerId(userId);
-    }
-
-    public AccountDto getAccountByCustomerId(Long customerId) {
-        doesCustomerExists(customerId);
-        return accountMapper.apply(accountRepository.findByCustomerId(customerId).get());
-    }
-
-    public AccountDto getAccountById(Long id) {
+    public AccountEntity getAccountById(Long id) {
         doesAccountExists(id);
         AccountEntity account = accountRepository.findById(id).get();
         CustomerDto customer = customerFeignClient.getCustomerById(account.getCustomerId());
-        AccountDto accountDto = accountMapper.apply(account);
-        accountDto.setCustomer(customer);
-        return accountDto;
+//        AccountDto accountDto = accountMapper.apply(account);
+//        accountDto.setCustomer(customer);
+//        return accountDto;
+        account.setCustomer(customer);
+        return account;
     }
 
-    public AccountDto createAccount(AccountEntity accountEntity) {
+    public List<AccountEntity> getAllAccountsByCustomerId(Long customerId) {
+        return accountRepository.findAllByCustomerId(customerId);
+    }
+
+    public AccountEntity createAccount(AccountEntity accountEntity) {
         accountEntity.setAccountNumber(Utility.generateAccountNumber());
+        customerFeignClient.verifyCustomer(accountEntity.getCustomerId(), "",1L);
         AccountEntity savedAccount = accountRepository.save(accountEntity);
-        return accountMapper.apply(savedAccount);
+        return savedAccount;
+//        return accountMapper.apply(savedAccount);
     }
 
     public ResponseEntity<?> deleteAccountById(Long id) {
@@ -66,9 +65,9 @@ public class AccountServiceV2 {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public void doesCustomerExists(Long id) {
-        if(!accountRepository.existsByCustomerId(id)){
-            throw new ResourceNotFoundException("Customer Account Not Found");
+    public void doesCustomerExists(Long customerId) {
+        if(!accountRepository.existsByCustomerId(customerId)){
+            throw new ResourceNotFoundException("No Customer Account Found with customerId: " + customerId);
         }
     }
 

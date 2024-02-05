@@ -58,7 +58,7 @@ public class ControllerExceptionHandler {
 		String response = ex.getClass().getSimpleName();
 		if (ex.getMostSpecificCause() instanceof java.sql.SQLIntegrityConstraintViolationException cause){
 			log.error(cause.getClass().getSimpleName() + " :: "+ cause.getMessage());
-			response= ex.getMessage();
+			response= cause.getMessage();
 		}
 		else {
 			log.error(ex.getClass().getSimpleName() + " :: "+ ex.getMessage());

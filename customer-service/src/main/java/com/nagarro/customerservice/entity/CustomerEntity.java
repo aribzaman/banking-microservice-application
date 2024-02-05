@@ -41,6 +41,10 @@ public class CustomerEntity {
     @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false)
+    @NotNull(message = "Phone Number cannot be null")
+    private Long phoneNumber;
+
     @CreationTimestamp
     @Column(name = "createdat", nullable = false)
     private LocalDateTime createdat;
@@ -52,9 +56,10 @@ public class CustomerEntity {
     @Transient
     private List<AccountEntity> accounts;
 
-    public CustomerEntity(String name, String email, String address) {
+    public CustomerEntity(String name, String email, String address, Long phoneNumber) {
         this.name = name;
         this.email = email;
         this.address = address;
+        this.phoneNumber = phoneNumber;
     }
 }

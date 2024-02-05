@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -37,6 +38,7 @@ import java.util.Map;
 //		handleInvalidFormatException(function) :: InvalidFormatException example= user : "a" // it should be 1 / "1"
 //		handleJsonParseException (function)    :: InvalidFormatException example= user : asdasd
 //MissingPathVariableException :: Path Variable absent so return 400
+//MissingServletRequestParameterException ::  for missing query parameters
 
 @ControllerAdvice
 @Slf4j
@@ -57,7 +59,7 @@ public class ControllerExceptionHandler {
 		String response = ex.getClass().getSimpleName();
 		if (ex.getMostSpecificCause() instanceof java.sql.SQLIntegrityConstraintViolationException cause){
 			log.error(cause.getClass().getSimpleName() + " :: "+ cause.getMessage());
-			response= ex.getMessage();
+			response= cause.getMessage();
 		}
 		else {
 			log.error(ex.getClass().getSimpleName() + " :: "+ ex.getMessage());
@@ -146,6 +148,13 @@ public class ControllerExceptionHandler {
 		log.error(ex.getClass().getSimpleName() + " :: "+ ex.getMessage());
 		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), ex.getMessage(), request.getRequestURI());
 		return new ResponseEntity<ResponseMessage>(message, HttpStatus.BAD_REQUEST);
+	}
+
+	//--------------------  for missing query parameters
+	@ExceptionHandler(MissingServletRequestParameterException.class)
+	public ResponseEntity<ResponseMessage> missingServletRequestParameterException(MissingServletRequestParameterException ex, HttpServletRequest request) {
+		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), ex.getMessage(), request.getRequestURI());
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 
 //-------------------- Global Handler

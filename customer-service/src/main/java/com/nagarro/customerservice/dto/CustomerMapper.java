@@ -10,10 +10,10 @@ public class CustomerMapper implements Function<CustomerDto, CustomerEntity> {
 
     @Override
     public CustomerEntity apply(CustomerDto customerDto) {
-        return new CustomerEntity(customerDto.name(), customerDto.email(), customerDto.address());
+        return new CustomerEntity(customerDto.name(), customerDto.email(), customerDto.address(), customerDto.phoneNumber());
     }
 
     public CustomerDto reverse(CustomerEntity customerEntity) {
-        return new CustomerDto(customerEntity.getId(), customerEntity.getName(), customerEntity.getEmail(), customerEntity.getAddress());
+        return new CustomerDto(customerEntity.getId(), customerEntity.getName(), customerEntity.getEmail(), customerEntity.getAddress(), customerEntity.getPhoneNumber());
     }
 }

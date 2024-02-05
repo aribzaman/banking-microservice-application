@@ -83,3 +83,7 @@ aaccount-service/src/main/java/com/nagarro/accountservice/exception/ValidationFa
 Qaccount-service/src/main/java/com/nagarro/accountservice/dto/ResponseMessage.java,a\7\a7e107f978889cd472e3d6de42f0e750166be65f
 Ž
 ^customer-service/src/main/java/com/nagarro/customerservice/controller/CustomerControllerx.java,5\9\59c66bf433915a3cc4f273bab3a4131a2d7472d0
+{
+Kapi-gateway/src/main/java/com/nagarro/apigateway/ApiGatewayApplication.java,3\a\3ac5397a48652cc299e5fc1734200a82d1deecad
+C
+api-gateway/pom.xml,2\b\2bfa2b108f2439e99e004f4085b58c22cf995f73

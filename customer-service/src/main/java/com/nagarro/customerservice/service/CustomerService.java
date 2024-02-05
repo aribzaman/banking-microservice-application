@@ -39,14 +39,14 @@ public class CustomerService {
 
     public CustomerDto createCustomer(CustomerDto customerDto) {
         CustomerEntity customerEntity = customerMapper.apply(customerDto);
-        //[FEATURE] can incorporate request to create account with details: (branch, city, ifsc, amount)
+        //[FEATURE] can incorporate request to create account with account details: (branch, city, ifsc, amount)
         //accountFeignClient.createCustomer(AccountEntity accountEntity);
         return customerMapper.reverse(customerRepository.save(customerEntity));
     }
 
-    public CustomerDto updateCustomer(Long id, CustomerDto customerDto) {
-        doesCustomerExists(id);
-        CustomerEntity existingCustomerToBeUpdated = customerRepository.findById(id).get();
+    public CustomerDto updateCustomer(Long customerId, CustomerDto customerDto) {
+        doesCustomerExists(customerId);
+        CustomerEntity existingCustomerToBeUpdated = customerRepository.findById(customerId).get();
         CustomerEntity updatedValues = customerMapper.apply(customerDto);
 
         BeanUtils.copyProperties(updatedValues, existingCustomerToBeUpdated, getNullPropertyNames(updatedValues));
@@ -56,7 +56,7 @@ public class CustomerService {
 
     public boolean verifyCustomer(Long customerId, String name, Long phoneNumber) {
         doesCustomerExists(customerId);
-        return customerRepository.existsByIdAndName(customerId, name);
+        return customerRepository.existsByIdAndNameAndPhoneNumber(customerId, name, phoneNumber);
     }
 
     public ResponseEntity<?> deleteCustomer(Long id) {

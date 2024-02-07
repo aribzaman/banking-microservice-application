@@ -3,6 +3,7 @@ package com.nagarro.accountservice.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nagarro.accountservice.dto.CustomerDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,15 +30,15 @@ public class AccountEntity {
     private Long accountNumber;
 
     @Column(nullable = false, name = "IFSC_Code")
-    @NotNull
+    @NotBlank
     private String ifscCode;
 
     @Column(nullable = false)
-    @NotNull
+    @NotBlank
     private String branch;
 
     @Column(nullable = false)
-    @NotNull
+    @NotBlank
     private String city;
 
     @Column(nullable = false)
@@ -59,12 +60,4 @@ public class AccountEntity {
     @Column(name = "modified_at", nullable = false)
     private LocalDateTime modifiedAt;
 
-    public AccountEntity(Long accountNumber, String ifscCode, String branch, String city, Long customerId, double balance) {
-        this.accountNumber = accountNumber;
-        this.ifscCode = ifscCode;
-        this.branch = branch;
-        this.city = city;
-        this.customerId = customerId;
-        this.balance = balance;
-    }
 }

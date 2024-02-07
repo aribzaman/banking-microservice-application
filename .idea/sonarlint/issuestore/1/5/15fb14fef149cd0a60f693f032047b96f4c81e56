@@ -1,10 +1,5 @@
 
-m
-java:S3655"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(ê¸§”8á’²×1
-m
-java:S3655&"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(½ˆĞÄ8á’²×1
-C
-java:S1452R"&Remove usage of generic wildcard type.(’°¥8é’²×1
-B
-java:S1452Y"&Remove usage of generic wildcard type.(ˆ¼­98é’²×1
-]	java:S125["<This block of commented-out lines of code should be removed.(ìıÄşÿÿÿÿ8†å²×1
+H
+java:S1452"&Remove usage of generic wildcard type.(ø¹ÕËúÿÿÿÿ8’˜—§Ø1
+H
+java:S1452"&Remove usage of generic wildcard type.(Ó²ª¶ùÿÿÿÿ8“˜—§Ø1

@@ -24,6 +24,4 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
     List<AccountEntity> findAllByCustomerId(Long customerId);
 
-    void deleteByCustomerId(Long customerId);
-
 }

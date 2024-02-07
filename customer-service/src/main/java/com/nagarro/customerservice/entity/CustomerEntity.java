@@ -33,7 +33,7 @@ public class CustomerEntity {
     private String name;
 
     @Email(message = "Email must be a well-formed email address")
-    @NotNull(message = "Email cannot be null")
+    @NotBlank(message = "Email cannot be blank")
     @Column(nullable = false, unique = true)
     private String email;
 

@@ -29,16 +29,20 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-//ResourceNotFoundException.class :: (throw Manually Not found in db )
-//DataIntegrityViolationException.class -> SQLIntegrityConstraintViolationException :: Repeated Value posted in db
-//FeignException.class ::exceptions pertaining to feign
-//ConstraintViolationException.class :: For Validators in entity/records
-//MethodArgumentTypeMismatchException.class :: type conversion failure in the path variable of endpoint= 8080/customer/as OR giving null to int in queryParameter
-//HttpMessageNotReadableException.class :: Redirection of wrong JSON form format to below functions
-//		handleInvalidFormatException(function) :: InvalidFormatException example= user : "a" // it should be 1 / "1"
-//		handleJsonParseException (function)    :: InvalidFormatException example= user : asdasd
-//MissingPathVariableException :: Path Variable absent so return 400
-//MissingServletRequestParameterException ::  for missing query parameters
+/**
+ *
+ * ResourceNotFoundException.class :: (throw Manually Not found in db ) <br>
+ * DataIntegrityViolationException -> SQLIntegrityConstraintViolationException :: Repeating Value in db<br>
+ * FeignException ::exceptions pertaining to feign <br>
+ * ConstraintViolationException :: For Validators in entity/records <br>
+ * MethodArgumentTypeMismatchException :: type conversion failure in the path variable of endpoint= 8080/customer/as OR giving null to int in queryParameter <br>
+ * HttpMessageNotReadableException :: Redirection of wrong JSON form format to below functions <br>
+ &emsp; 	-handleInvalidFormatException(fn) :: InvalidFormatException example= user : "a" // it should be 1 <br>
+ &emsp; 	-handleJsonParseException (fn)    :: InvalidFormatException example= user : "xyz" <br>
+ * MissingPathVariableException :: Path Variable absent so return 400 <br>
+ * MissingServletRequestParameterException ::  for missing query parameters <br>
+ *
+ */
 
 @ControllerAdvice
 @Slf4j
@@ -50,11 +54,11 @@ public class ControllerExceptionHandler {
 		ResponseMessage message = new ResponseMessage(HttpStatus.NOT_FOUND
 				, HttpStatus.NOT_FOUND.value(), LocalDateTime.now(), ex.getMessage(), request.getRequestURI());
 
-		return new ResponseEntity<ResponseMessage>(message, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ResponseEntity<ResponseMessage> DataIntegrityViolationException(DataIntegrityViolationException ex,
+	public ResponseEntity<ResponseMessage> dataIntegrityViolationException(DataIntegrityViolationException ex,
 																		   HttpServletRequest request) {
 		String response = ex.getClass().getSimpleName();
 		if (ex.getMostSpecificCause() instanceof java.sql.SQLIntegrityConstraintViolationException cause){
@@ -67,11 +71,11 @@ public class ControllerExceptionHandler {
 		ResponseMessage message = new ResponseMessage(HttpStatus.CONFLICT, HttpStatus.CONFLICT.value(), LocalDateTime.now(),
 				response, request.getRequestURI());
 
-		return new ResponseEntity<ResponseMessage>(message, HttpStatus.CONFLICT);
+		return new ResponseEntity<>(message, HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(FeignException.class)
-	public ResponseEntity<ResponseMessage> FeignException(FeignException ex, HttpServletRequest request) throws JsonProcessingException {
+	public ResponseEntity<ResponseMessage> feignException(FeignException ex, HttpServletRequest request) throws JsonProcessingException {
 		ObjectMapper mapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
 		if(ex.status() >= 500 && ex.status() <= 599){
 			ResponseMessage errorResponse = new ResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), LocalDateTime.now(),
@@ -95,7 +99,7 @@ public class ControllerExceptionHandler {
 		log.error(ex.getClass().getSimpleName() + " :: "+ errors);
 		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 				errors.toString(), request.getRequestURI());
-		return new ResponseEntity<ResponseMessage>(message, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -105,7 +109,7 @@ public class ControllerExceptionHandler {
 		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 				"Invalid data type for parameter: " + ex.getName(), request.getRequestURI());
 
-		return new ResponseEntity<ResponseMessage>(message, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 	
 	//----------------
@@ -122,7 +126,7 @@ public class ControllerExceptionHandler {
 			log.error(initialException.getClass().getSimpleName() + " :: "+ ex.getMessage());
 			ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 					initialException.getMessage(), request.getRequestURI());
-			return new ResponseEntity<ResponseMessage>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -130,7 +134,7 @@ public class ControllerExceptionHandler {
 		log.error(ex.getClass().getSimpleName() + " :: "+ ex.getMessage());
 		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 				"Wrong data type provided in JSON Form with given value: " + ex.getValue(), request.getRequestURI());
-		return new ResponseEntity<ResponseMessage>(message, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 
 	private ResponseEntity<ResponseMessage> handleJsonParseException(JsonParseException ex,
@@ -138,16 +142,16 @@ public class ControllerExceptionHandler {
 		log.error(ex.getClass().getSimpleName() + " :: "+ ex.getMessage());
 		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 				ex.getOriginalMessage(), request.getRequestURI());
-		return new ResponseEntity<ResponseMessage>(message, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 
 //----------------------------------------------------------------
 
 	@ExceptionHandler(MissingPathVariableException.class)
-	public ResponseEntity<ResponseMessage> MissingPathVariableException(MissingPathVariableException ex, HttpServletRequest request) {
+	public ResponseEntity<ResponseMessage> missingPathVariableException(MissingPathVariableException ex, HttpServletRequest request) {
 		log.error(ex.getClass().getSimpleName() + " :: "+ ex.getMessage());
 		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), ex.getMessage(), request.getRequestURI());
-		return new ResponseEntity<ResponseMessage>(message, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 
 	//--------------------  for missing query parameters
@@ -168,7 +172,7 @@ public class ControllerExceptionHandler {
 				HttpStatus.INTERNAL_SERVER_ERROR.value(), LocalDateTime.now(), ex.getMessage() + " (Fall Back Case) ",
 				request.getRequestURI());
 
-		return new ResponseEntity<ResponseMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

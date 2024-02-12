@@ -1,12 +1,0 @@
-
-‰
-java:S1488"gImmediately return this expression instead of assigning it to the temporary variable "customerDtoList".(Ù‘Ùøÿÿÿÿ8ëº¥µ×1
-…
-java:S1488$"cImmediately return this expression instead of assigning it to the temporary variable "customerDto".(­½—ıÿÿÿÿ8ìº¥µ×1
-m
-java:S36551"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(Ş‹¥Õ8÷º¥µ×1
-m
-java:S3655#"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(»µê8÷º¥µ×1
-X	java:S125+"<This block of commented-out lines of code should be removed.(ê½Œ8şº¥µ×1
-H
-java:S1452>"&Remove usage of generic wildcard type.(ºøŠ€úÿÿÿÿ8»¥µ×1

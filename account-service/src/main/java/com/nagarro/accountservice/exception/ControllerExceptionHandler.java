@@ -16,27 +16,40 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.nagarro.accountservice.dto.ResponseMessage;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-//ResourceNotFoundException.class :: (throw Manually : Resource Not found in db )
-//DataIntegrityViolationException.class -> SQLIntegrityConstraintViolationException :: Repeated Value posted in db
-//FeignException.class ::exceptions pertaining to feign
-//ValidationFailedException.class :: throw manually : when verification fails.
-//ConstraintViolationException.class :: For Validators in entity/records
-//MethodArgumentTypeMismatchException.class :: type conversion failure in the path variable of endpoint= 8080/customer/as OR giving null to int in queryParameter
-//HttpMessageNotReadableException.class :: Redirection of wrong JSON form format to below functions
-//		handleInvalidFormatException(function) :: InvalidFormatException example= user : "a" // it should be 1 / "1"
-//		handleJsonParseException (function)    :: InvalidFormatException example= user : asdasd
-//MissingPathVariableException :: Path Variable absent so return 400
+/**
+ * <b>{@link #resourceNotFoundException} </b> :: (Custom Exception for Not found in db ) <br><br>
+ * <b>{@link #dataIntegrityViolationException}</b> -> SQLIntegrityConstraintViolationException  <br><br>
+ * <b>{@link #feignException}</b> ::exceptions pertaining to feign <br><br>
+ *
+ * <b>{@link #handleRequestPathVariablesValidationException}</b> ConstraintViolationException :: For Validators in entity/records <br><br>
+ * <b>{@link #handleMethodArgumentTypeMismatch}</b> MethodArgumentTypeMismatchException :: type conversion failure in the path variable of endpoint= 8080/customer/as OR giving null to int in queryParameter <br><br>
+ * <b>{@link #handleMethodArgsNotValidException}</b> MethodArgumentNotValidException ::  For Validators in entity/records while persisting or @Validated <br><br>
+ *
+ * <b>{@link #handleHttpMessageNotReadableException} </b> httpMessageNotReadableException :: Redirection of wrong JSON form format to below functions <br><br>
+ * 	 &emsp; <b>{@link #handleInvalidFormatException}</b> :: InvalidFormatException example= user : "a" // it should be 1 <br><br>
+ * 	 &emsp; <b>{@link #handleJsonParseException}</b> :: InvalidFormatException example= user : "xyz" <br><br>
+ *
+ *  <b>{@link #missingPathVariableException}</b>  :: Path Variable absent so return 400 <br><br>
+ * <b>{@link #missingServletRequestParameterException}</b>  ::  for missing query parameters <br><br>
+ * <b>{@link #handleNotFoundError}</b> noResourceFoundException  :: Accessing unconfigured endpoints on server. <br><br>
+ *
+ */
 
 @RestControllerAdvice
 @Slf4j
@@ -53,7 +66,7 @@ public class ControllerExceptionHandler {
 	}
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ResponseEntity<ResponseMessage> DataIntegrityViolationException(DataIntegrityViolationException ex,
+	public ResponseEntity<ResponseMessage> dataIntegrityViolationException(DataIntegrityViolationException ex,
 																		   HttpServletRequest request) {
 		String response = ex.getClass().getSimpleName();
 		if (ex.getMostSpecificCause() instanceof java.sql.SQLIntegrityConstraintViolationException cause){
@@ -70,7 +83,7 @@ public class ControllerExceptionHandler {
 	}
 
 	@ExceptionHandler(FeignException.class)
-	public ResponseEntity<ResponseMessage> FeignException(FeignException ex, HttpServletRequest request) throws JsonProcessingException {
+	public ResponseEntity<ResponseMessage> feignException(FeignException ex, HttpServletRequest request) throws JsonProcessingException {
 		ObjectMapper mapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
 		if(ex.status() >= 500 && ex.status() <= 599){
 			ResponseMessage errorResponse = new ResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), LocalDateTime.now(),
@@ -82,7 +95,7 @@ public class ControllerExceptionHandler {
 	}
 
 	@ExceptionHandler(ValidationFailedException.class)
-	public ResponseEntity<ResponseMessage> ValidationFailedException(ValidationFailedException ex, HttpServletRequest request) {
+	public ResponseEntity<ResponseMessage> validationFailedException(ValidationFailedException ex, HttpServletRequest request) {
 		log.error(ex.getClass().getSimpleName() + " :: "+ ex.getMessage());
 		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(),
 				LocalDateTime.now(), ex.getMessage(), request.getRequestURI());
@@ -91,7 +104,7 @@ public class ControllerExceptionHandler {
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)
-	private ResponseEntity<ResponseMessage> handleRequestPathVariablesValidationException(jakarta.validation.ConstraintViolationException ex,
+	private ResponseEntity<ResponseMessage> handleRequestPathVariablesValidationException(ConstraintViolationException ex,
 																						  HttpServletRequest request) {
 		Map<String, String> errors = new HashMap<>();
 		for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
@@ -112,6 +125,22 @@ public class ControllerExceptionHandler {
 		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 				"Invalid data type for parameter: " + ex.getName(), request.getRequestURI());
 
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+	}
+
+	//For Validators in entity/records
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ResponseMessage> handleMethodArgsNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
+
+		Map<String, String> errors = new LinkedHashMap<String, String>();
+		e.getBindingResult().getAllErrors().forEach((error) -> {
+			String fieldName = ((FieldError) error).getField();
+			String message = error.getDefaultMessage();
+			errors.put(fieldName, message);
+		});
+
+		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
+				errors.toString(), request.getRequestURI());
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 	
@@ -151,11 +180,26 @@ public class ControllerExceptionHandler {
 //----------------------------------------------------------------
 
 	@ExceptionHandler(MissingPathVariableException.class)
-	public ResponseEntity<ResponseMessage> MissingPathVariableException(MissingPathVariableException ex, HttpServletRequest request) {
+	public ResponseEntity<ResponseMessage> missingPathVariableException(MissingPathVariableException ex, HttpServletRequest request) {
 		log.error(ex.getClass().getSimpleName() + " :: "+ ex.getMessage());
 		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), ex.getMessage(), request.getRequestURI());
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
+
+	//--------------------  for missing query parameters
+	@ExceptionHandler(MissingServletRequestParameterException.class)
+	public ResponseEntity<ResponseMessage> missingServletRequestParameterException(MissingServletRequestParameterException ex, HttpServletRequest request) {
+		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), ex.getMessage(), request.getRequestURI());
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+	}
+
+	//--------------------- Accessing unconfigured endpoints on server
+	@ExceptionHandler({NoResourceFoundException.class})
+	public ResponseEntity<ResponseMessage> handleNotFoundError(NoResourceFoundException ex, HttpServletRequest request) {
+		ResponseMessage message = new ResponseMessage(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), LocalDateTime.now(), "The requested URL " + request.getRequestURI() + " was not found on this server.", null);
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+	}
+
 
 //-------------------- Global Handler
 	

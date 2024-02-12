@@ -61,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
             amount = transactionDto.getAmount();
         }
         else{
-            throw new ValidationFailedException("Wrong transaction type");
+            throw new ValidationFailedException("Wrong transaction type : Choose DEBIT / CREDIT");
         }
         double newBalance = account.getBalance() + amount;
         account.setBalance(newBalance);

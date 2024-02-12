@@ -1,10 +1,6 @@
 
-‰
-java:S1488"gImmediately return this expression instead of assigning it to the temporary variable "customerDtoList".(Ω‘Ωψÿÿÿÿ8λΊ¥µΧ1
-…
-java:S1488'"cImmediately return this expression instead of assigning it to the temporary variable "customerDto".(­½—ύÿÿÿÿ8μΊ¥µΧ1
 m
-java:S36556"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(ή‹¥Υ8χΊ¥µΧ1
+java:S3655'"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(»µκ8υήνθΩ1
 m
-java:S3655&"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(»µκ8χΊ¥µΧ1
-X	java:S125/"<This block of commented-out lines of code should be removed.(κ½8ώΊ¥µΧ1
+java:S36558"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(ή‹¥Υ8υήνθΩ1
+X	java:S1250"<This block of commented-out lines of code should be removed.(κ½8ύήνθΩ1

@@ -46,8 +46,7 @@ public class AccountEntity {
     private Long customerId;
 
     @Column(nullable = false)
-    @NotNull
-    private double balance=0.0;
+    private double balance;
 
     @Transient
     private CustomerDto customer;

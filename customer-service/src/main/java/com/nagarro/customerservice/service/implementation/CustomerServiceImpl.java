@@ -4,6 +4,7 @@ import com.nagarro.customerservice.dao.CustomerRepository;
 import com.nagarro.customerservice.dto.CustomerDto;
 import com.nagarro.customerservice.dto.CustomerMapper;
 import com.nagarro.customerservice.entity.CustomerEntity;
+import com.nagarro.customerservice.exception.DuplicateEntryException;
 import com.nagarro.customerservice.exception.ResourceNotFoundException;
 import com.nagarro.customerservice.feign.AccountFeignClient;
 import com.nagarro.customerservice.service.CustomerService;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.nagarro.customerservice.utility.Utility.getNullPropertyNames;
 
@@ -28,22 +30,21 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerDto> getAllCustomer() {
         List<CustomerEntity> allCustomers = customerRepository.findAll();
-        List<CustomerDto> customerDtoList = allCustomers.stream().map(customerMapper::reverse).toList();
-        return customerDtoList;
+        return allCustomers.stream().map(customerMapper::reverse).toList();
     }
 
     @Override
     public CustomerDto getCustomerById(Long id) {
         doesCustomerExists(id);
         CustomerEntity customer = customerRepository.findById(id).get();
-        CustomerDto customerDto = customerMapper.reverse(customer);
-        return customerDto;
+        return customerMapper.reverse(customer);
     }
 
     @Override
     public CustomerDto createCustomer(CustomerDto customerDto) {
         CustomerEntity customerEntity = customerMapper.apply(customerDto);
-        //[FEATURE] can incorporate request to create account with account details: (branch, city, ifsc, amount)
+        duplicateCheck(customerDto);
+        //[FEATURE] [implemented in V2] can incorporate request to create account with account details: (branch, city, ifsc, amount)
         //accountFeignClient.createCustomer(AccountEntity accountEntity);
         return customerMapper.reverse(customerRepository.save(customerEntity));
     }
@@ -51,6 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDto updateCustomer(Long customerId, CustomerDto customerDto) {
         doesCustomerExists(customerId);
+        duplicateCheck(customerDto);
         CustomerEntity existingCustomerToBeUpdated = customerRepository.findById(customerId).get();
         CustomerEntity updatedValues = customerMapper.apply(customerDto);
 
@@ -76,6 +78,15 @@ public class CustomerServiceImpl implements CustomerService {
     private void doesCustomerExists(Long id) {
         if(!customerRepository.existsById(id)){
             throw new ResourceNotFoundException("Customer Not Found");
+        }
+    }
+
+    private void duplicateCheck(CustomerDto customerDto) {
+        if(!Objects.isNull(customerDto.phoneNumber()) && customerRepository.existsByPhoneNumber(customerDto.phoneNumber())){
+            throw new DuplicateEntryException(customerDto.phoneNumber().toString());
+        }
+        if(!Objects.isNull(customerDto.email()) && customerRepository.existsByEmail(customerDto.email())){
+            throw new DuplicateEntryException(customerDto.email());
         }
     }
 

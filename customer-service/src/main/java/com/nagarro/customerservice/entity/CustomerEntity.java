@@ -28,7 +28,7 @@ public class CustomerEntity {
 
     @NotBlank(message = "Name cannot be empty")
     @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "Name must contain only letters and spaces")
     private String name;
 
@@ -41,8 +41,8 @@ public class CustomerEntity {
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
     @NotNull(message = "Phone Number cannot be null")
+    @Column(nullable = false, unique = true)
     private Long phoneNumber;
 
     @CreationTimestamp

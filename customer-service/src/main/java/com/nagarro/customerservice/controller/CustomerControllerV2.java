@@ -1,6 +1,7 @@
 package com.nagarro.customerservice.controller;
 
 import com.nagarro.customerservice.dto.CustomerDto;
+import com.nagarro.customerservice.dto.CustomerDtoV2;
 import com.nagarro.customerservice.entity.CustomerEntity;
 import com.nagarro.customerservice.service.CustomerServiceV2;
 import lombok.AllArgsConstructor;
@@ -29,7 +30,7 @@ public class CustomerControllerV2 {
     }
 
     @PostMapping
-    public CustomerEntity createCustomer(@RequestBody CustomerDto customerDto){
+    public CustomerEntity createCustomer(@RequestBody CustomerDtoV2 customerDto){
         return customerServiceV2.createCustomer(customerDto);
     }
 
@@ -38,8 +39,4 @@ public class CustomerControllerV2 {
         return customerServiceV2.updateCustomer(id, customerDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable Long id){
-        return customerServiceV2.deleteCustomer(id);
-    }
 }

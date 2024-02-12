@@ -1,6 +1,7 @@
 package com.nagarro.customerservice.service;
 
 import com.nagarro.customerservice.dto.CustomerDto;
+import com.nagarro.customerservice.dto.CustomerDtoV2;
 import com.nagarro.customerservice.entity.CustomerEntity;
 import org.springframework.http.ResponseEntity;
 
@@ -11,10 +12,8 @@ public interface CustomerServiceV2 {
 
     CustomerEntity getCustomerById(Long customerId);
 
-    CustomerEntity createCustomer(CustomerDto customerDto);
+    CustomerEntity createCustomer(CustomerDtoV2 customerDto);
 
     CustomerEntity updateCustomer(Long id, CustomerDto customerDto);
-
-    ResponseEntity<?> deleteCustomer(Long id);
 
 }

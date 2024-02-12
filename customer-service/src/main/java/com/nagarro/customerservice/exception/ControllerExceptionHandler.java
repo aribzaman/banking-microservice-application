@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,24 +26,31 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.nagarro.customerservice.dto.ResponseMessage;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
+ * <b>{@link #resourceNotFoundException} </b> :: (Custom Exception for Not found in db ) <br><br>
+ * <b>{@link #dataIntegrityViolationException}</b> -> SQLIntegrityConstraintViolationException  <br><br>
+ * <b>{@link #feignException}</b> ::exceptions pertaining to feign <br><br>
  *
- * ResourceNotFoundException.class :: (throw Manually Not found in db ) <br>
- * DataIntegrityViolationException -> SQLIntegrityConstraintViolationException :: Repeating Value in db<br>
- * FeignException ::exceptions pertaining to feign <br>
- * ConstraintViolationException :: For Validators in entity/records <br>
- * MethodArgumentTypeMismatchException :: type conversion failure in the path variable of endpoint= 8080/customer/as OR giving null to int in queryParameter <br>
- * HttpMessageNotReadableException :: Redirection of wrong JSON form format to below functions <br>
- &emsp; 	-handleInvalidFormatException(fn) :: InvalidFormatException example= user : "a" // it should be 1 <br>
- &emsp; 	-handleJsonParseException (fn)    :: InvalidFormatException example= user : "xyz" <br>
- * MissingPathVariableException :: Path Variable absent so return 400 <br>
- * MissingServletRequestParameterException ::  for missing query parameters <br>
+ * <b>{@link #handleRequestPathVariablesValidationException}</b> ConstraintViolationException :: For Validators in entity/records <br><br>
+ * <b>{@link #handleMethodArgumentTypeMismatch}</b> MethodArgumentTypeMismatchException :: type conversion failure in the path variable of endpoint= 8080/customer/as OR giving null to int in queryParameter <br><br>
+ * <b>{@link #handleMethodArgsNotValidException}</b> MethodArgumentNotValidException ::  For Validators in entity/records while persisting or @Validated <br><br>
  *
+ * <b>{@link #handleHttpMessageNotReadableException} </b> httpMessageNotReadableException :: Redirection of wrong JSON form format to below functions <br><br>
+ * 	 &emsp; <b>{@link #handleInvalidFormatException}</b> :: InvalidFormatException example= user : "a" // it should be 1 <br><br>
+ * 	 &emsp; <b>{@link #handleJsonParseException}</b> :: InvalidFormatException example= user : "xyz" <br><br>
+ *
+ *  <b>{@link #missingPathVariableException}</b>  :: Path Variable absent so return 400 <br><br>
+ * <b>{@link #missingServletRequestParameterException}</b>  ::  for missing query parameters <br><br>
+ * <b>{@link #handleNotFoundError}</b> noResourceFoundException  :: Accessing unconfigured endpoints on server. <br><br>
+ * <b>{@link #duplicateEntryException} </b>  :: (Custom Exception for duplicate in db ) <br><br>
  */
 
 @ControllerAdvice
@@ -111,6 +120,22 @@ public class ControllerExceptionHandler {
 
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
+
+	//For Validators in entity/records
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ResponseMessage> handleMethodArgsNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
+
+		Map<String, String> errors = new LinkedHashMap<String, String>();
+		e.getBindingResult().getAllErrors().forEach((error) -> {
+			String fieldName = ((FieldError) error).getField();
+			String message = error.getDefaultMessage();
+			errors.put(fieldName, message);
+		});
+
+		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
+				errors.toString(), request.getRequestURI());
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+	}
 	
 	//----------------
 
@@ -161,7 +186,21 @@ public class ControllerExceptionHandler {
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 
-//-------------------- Global Handler
+	//--------------------- Accessing unconfigured endpoints on server
+	@ExceptionHandler({NoResourceFoundException.class})
+	public ResponseEntity<ResponseMessage> handleNotFoundError(NoResourceFoundException ex, HttpServletRequest request) {
+		ResponseMessage message = new ResponseMessage(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), LocalDateTime.now(), "The requested URL " + request.getRequestURI() + " was not found on this server.", null);
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+	}
+
+	//--------------------- Duplicate Error
+	@ExceptionHandler(DuplicateEntryException.class)
+	public ResponseEntity<ResponseMessage> duplicateEntryException(DuplicateEntryException ex, HttpServletRequest request) {
+		ResponseMessage message = new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), ex.getMessage(), request.getRequestURI());
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+	}
+
+	//-------------------- Global Handler
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ResponseMessage> globalExceptionHandler(Exception ex, HttpServletRequest request) {

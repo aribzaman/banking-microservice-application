@@ -36,7 +36,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8765/api/v1/customer/39",
+							"raw": "http://localhost:8765/api/v1/customer/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -46,7 +46,7 @@
 								"api",
 								"v1",
 								"customer",
-								"39"
+								"1"
 							]
 						}
 					},
@@ -59,7 +59,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Arib Zaman\",\r\n    \"email\": \"catcharibzaman2@gmail.com\",\r\n    \"address\": \"I/9 GulabBadiColony, Khuldabad\",\r\n    \"phoneNumber\": 9415639059\r\n}",
+							"raw": "{\r\n    \"name\": \"Alex John\",\r\n    \"email\": \"alexJohn@gmail.com\",\r\n    \"address\": \"3/t New Haven Park, Illios\",\r\n    \"phoneNumber\": 1234567890\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -101,7 +101,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"address\": \"I/9 GulabBadiColony, Khuldabad - 211003\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Alex John Brian\",\r\n    \"email\": \"alexJohn@gmail.com\",\r\n    \"phoneNumber\": 1234567890\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -109,7 +109,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8765/api/v1/customer/39",
+							"raw": "http://localhost:8765/api/v1/customer/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -119,7 +119,7 @@
 								"api",
 								"v1",
 								"customer",
-								"39"
+								"1"
 							]
 						}
 					},
@@ -131,7 +131,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8765/api/v1/customer/21",
+							"raw": "http://localhost:8765/api/v1/customer/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -141,7 +141,7 @@
 								"api",
 								"v1",
 								"customer",
-								"21"
+								"1"
 							]
 						}
 					},
@@ -212,7 +212,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v2/customer/2",
+							"raw": "http://localhost:8080/api/v2/customer/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -222,7 +222,7 @@
 								"api",
 								"v2",
 								"customer",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -235,7 +235,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Arib Zaman\",\r\n    \"email\": \"catcharib2@gmail.com\",\r\n    \"address\": \"I/9 GulabBadiColony, Khuldabad\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Alex John\",\r\n    \"email\": \"alexJohn@gmail.com\",\r\n    \"address\": \"3/t New Haven Park, Illios\",\r\n    \"phoneNumber\": 1234567890,\r\n    \"amount\" : 1.0,\r\n    \"ifscCode\" : \"ifsc00123\",\r\n    \"branch\" : \"something\",\r\n    \"city\" : \"something\"\r\n}\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -277,7 +277,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phoneNumber\": 7388962656\r\n}",
+							"raw": "{\r\n    \"phoneNumber\": 1987654321\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -296,28 +296,6 @@
 								"v2",
 								"customer",
 								"3"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v2/customer/30",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v2",
-								"customer",
-								"30"
 							]
 						}
 					},
@@ -357,7 +335,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"accountNumber\" : \"2402042004559169\",\r\n    \"ifscCode\": \"ab1234\",\r\n    \"branch\": \"neoganj\",\r\n    \"name\": \"Arib Zaman\",\r\n    \"phoneNumber\" : 9415639059,\r\n    \"amount\" : 1000000,\r\n    \"transactionType\" : \"debit\"\r\n}",
+							"raw": "{\r\n    \"accountNumber\" : \"2402042004559169\",\r\n    \"ifscCode\": \"ifsc00123\",\r\n    \"branch\": \"something\",\r\n    \"name\": \"Alex John\",\r\n    \"phoneNumber\" : 1234567890,\r\n    \"amount\" : 1000,\r\n    \"transactionType\" : \"credit\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -387,7 +365,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/api/v1/account/2402061155194971",
+							"raw": "http://localhost:8081/api/v1/account/2402080027071717",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -397,7 +375,7 @@
 								"api",
 								"v1",
 								"account",
-								"2402061155194971"
+								"2402080027071717"
 							]
 						}
 					},
@@ -409,7 +387,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8765/api/v1/account/customer/27",
+							"raw": "http://localhost:8765/api/v1/account/customer/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -420,7 +398,7 @@
 								"v1",
 								"account",
 								"customer",
-								"27"
+								"1"
 							]
 						}
 					},
@@ -433,7 +411,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"customerId\" : 2,\r\n    \"balance\" : 1000.0,\r\n    \"ifscCode\" : \"ab1234\",\r\n    \"branch\" : \"neoganj\",\r\n    \"city\" : \"allahabad\"\r\n}",
+							"raw": "{\r\n    \"customerId\" : 1,\r\n    \"balance\" : 1000.0,\r\n    \"ifscCode\" : \"ifsc00123\",\r\n    \"branch\" : \"something\",\r\n    \"city\" : \"something\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -488,7 +466,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/api/v2/account/58",
+							"raw": "http://localhost:8081/api/v2/account/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -498,7 +476,7 @@
 								"api",
 								"v2",
 								"account",
-								"58"
+								"1"
 							]
 						}
 					},
@@ -510,7 +488,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/api/v2/account/customer/2",
+							"raw": "http://localhost:8081/api/v2/account/customer/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -521,7 +499,7 @@
 								"v2",
 								"account",
 								"customer",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -534,7 +512,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"customerId\" : 27,\r\n    \"balance\" : 14.0,\r\n    \"ifscCode\" : \"ab1234\",\r\n    \"branch\" : \"neoganj\",\r\n    \"city\" : \"allahabad\"\r\n}",
+							"raw": "{\r\n    \"customerId\" : 1,\r\n    \"balance\" : 1000.0,\r\n    \"ifscCode\" : \"ifsc00123\",\r\n    \"branch\" : \"something\",\r\n    \"city\" : \"something\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -563,7 +541,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/api/v2/account/29",
+							"raw": "http://localhost:8081/api/v2/account/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -573,7 +551,7 @@
 								"api",
 								"v2",
 								"account",
-								"29"
+								"1"
 							]
 						}
 					},

@@ -51,6 +51,7 @@ public class AccountServiceImpl implements AccountService {
 
     private static void updateBalance(TransactionDto transactionDto, AccountEntity account) {
         double amount;
+        if(transactionDto.getAmount()<1){ throw new ValidationFailedException("Amount Should Be Greater than 0");}
         if(transactionDto.getTransactionType().equalsIgnoreCase("debit")){
             if(transactionDto.getAmount() > account.getBalance()){
                 throw new ValidationFailedException("Insufficient Balance in account.");

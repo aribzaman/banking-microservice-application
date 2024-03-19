@@ -1,8 +1,5 @@
 
 
-java:S14887"dImmediately return this expression instead of assigning it to the temporary variable "savedAccount".(¢šÂ¡8ã«Ø§Ø1
+java:S14882"dImmediately return this expression instead of assigning it to the temporary variable "savedAccount".(¢šÂ¡8à›Éµå1
 m
-java:S3655$"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(Ëšâ¹8ò«Ø§Ø1
-]	java:S125"<This block of commented-out lines of code should be removed.(ôİŒûûÿÿÿÿ8÷«Ø§Ø1
-]	java:S125&"<This block of commented-out lines of code should be removed.(ÿ÷¯ÿÿÿÿÿ8ù«Ø§Ø1
-]	java:S1259"<This block of commented-out lines of code should be removed.(‡ô¸«şÿÿÿÿ8û«Ø§Ø1
+java:S3655""PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(Ëšâ¹8ò«Ø§Ø1

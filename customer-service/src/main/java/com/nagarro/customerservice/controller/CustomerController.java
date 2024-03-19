@@ -3,7 +3,6 @@ package com.nagarro.customerservice.controller;
 import com.nagarro.customerservice.dto.CustomerDto;
 import com.nagarro.customerservice.service.CustomerService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,8 +35,8 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable Long id){
-        return customerService.deleteCustomer(id);
+    public void deleteCustomer(@PathVariable Long id){
+        customerService.deleteCustomer(id);
     }
 
     @GetMapping("/verify/{customerId}")

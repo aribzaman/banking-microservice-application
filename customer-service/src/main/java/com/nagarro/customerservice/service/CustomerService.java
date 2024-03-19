@@ -16,6 +16,6 @@ public interface CustomerService {
 
     boolean verifyCustomer(Long customerId, String name, Long phoneNumber);
 
-    ResponseEntity<?> deleteCustomer(Long id);
+    void deleteCustomer(Long id);
 
 }

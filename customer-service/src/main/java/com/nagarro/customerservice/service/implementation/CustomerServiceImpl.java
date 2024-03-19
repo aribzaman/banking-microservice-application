@@ -10,8 +10,6 @@ import com.nagarro.customerservice.feign.AccountFeignClient;
 import com.nagarro.customerservice.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerEntity customerEntity = customerMapper.apply(customerDto);
         duplicateCheck(customerDto);
         //[FEATURE] [implemented in V2] can incorporate request to create account with account details: (branch, city, ifsc, amount)
-        //accountFeignClient.createCustomer(AccountEntity accountEntity);
+        //accountFeignClient.createAccount(AccountEntity accountEntity);
         return customerMapper.reverse(customerRepository.save(customerEntity));
     }
 
@@ -68,11 +66,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResponseEntity<?> deleteCustomer(Long id) {
+    public void deleteCustomer(Long id) {
         doesCustomerExists(id);
         accountFeignClient.deleteAllAccountsByCustomerId(id);
         customerRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private void doesCustomerExists(Long id) {

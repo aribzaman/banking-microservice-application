@@ -25,8 +25,6 @@ public class AccountServiceV2Impl implements AccountServiceV2 {
 
     @Override
     public List<AccountEntity> getAllAccounts() {
-//        List<AccountEntity> allAccounts = accountRepository.findAll();
-//        return allAccounts.stream().map(accountMapper).toList();
         return accountRepository.findAll();
     }
 
@@ -35,9 +33,6 @@ public class AccountServiceV2Impl implements AccountServiceV2 {
         doesAccountExists(id);
         AccountEntity account = accountRepository.findById(id).get();
         CustomerDto customer = customerFeignClient.getCustomerById(account.getCustomerId());
-//        AccountDto accountDto = accountMapper.apply(account);
-//        accountDto.setCustomer(customer);
-//        return accountDto;
         account.setCustomer(customer);
         return account;
     }
@@ -54,7 +49,6 @@ public class AccountServiceV2Impl implements AccountServiceV2 {
         customerFeignClient.verifyCustomer(accountEntity.getCustomerId(), "",1L);
         AccountEntity savedAccount = accountRepository.save(accountEntity);
         return savedAccount;
-//        return accountMapper.apply(savedAccount);
     }
 
     @Override

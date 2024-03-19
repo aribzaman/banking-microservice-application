@@ -121,3 +121,5 @@ acustomer-service/src/main/java/com/nagarro/customerservice/exception/DuplicateE
 Zcustomer-service/src/main/java/com/nagarro/customerservice/feign/AccountFeignClientV2.java,a\d\ad0429cde59376c55add063eb7fd8e880b42db2a
 v
 FResources/microservice-configurations/application-common-db.properties,2\3\23542603eaf57fa427a1a43816736f3eb1bd3c7e
+E
+Resources/Queries.sql,e\e\ee8007dd3c035004f636e791ec134e69c7bea952

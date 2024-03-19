@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -54,7 +55,7 @@ public class CustomerEntity {
     private LocalDateTime modifiedat;
 
     @Transient
-    private List<AccountEntity> accounts;
+    private List<AccountEntity> accounts= new ArrayList<>();
 
     public CustomerEntity(String name, String email, String address, Long phoneNumber) {
         this.name = name;
